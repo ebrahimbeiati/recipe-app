@@ -1,3 +1,4 @@
+import { Recipe } from "./types";
 
 export const searchRecipes = async (searchTerm: string, page: number) => {
   const baseUrl = new URL(`http://localhost:5100/api/recipes/search`);
@@ -25,4 +26,86 @@ export const getRecipeSummary = async (recipeId: string) => {
 
   return res.json();
 };
+
+export const getRecipeInformation = async (recipeId: string) => {
+  const url = new URL(`http://localhost:5100/api/recipes/${recipeId}/information`);
+  console.log("Request URL:", url.toString());
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch recipe: ${res.status}`);
+  }
+
+  return res.json();
+};
+
+export const getFavouriteRecipes = async () => {
+  const url = new URL('http://localhost:5100/api/recipes/favourite');
+  console.log("Request URL:", url.toString());
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch recipe: ${res.status}`);
+  }
+
+  return res.json();
+}; 
+
+export const favouriteRecipe = async (recipeId: string, userId: string) => {
+  const url = new URL('http://localhost:5100/api/recipes/favourite');
+  console.log("Request URL:", url.toString());
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({recipeId, userId}),
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch recipe: ${res.status}`);
+  }
+
+  return res.json();
+};
+
+
+export const removeFavouriteRecipe = async (recipeId: string) => {
+  const url = new URL('http://localhost:5100/api/recipes/favourite');
+  const body = {
+    recipeId: recipeId
+  }
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({body}),
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch recipe: ${res.status}`);
+  }
+
+  return res.json();
+};
+
+export const addFavouriteRecipe = async (recipe: Recipe) => {
+  const url = new URL('http://localhost:5100/api/recipes/favourite');
+  const body = {
+    recipeId: recipe.id
+  }
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({body}),
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch recipe: ${res.status}`);
+  }
+
+  return res.json();
+};
+
+
+
 
