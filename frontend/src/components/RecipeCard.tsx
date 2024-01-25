@@ -1,14 +1,15 @@
-import React from 'react'
 import { Recipe } from '../types'
 
 interface Props{
 
-    recipe: Recipe
+  recipe: Recipe;
+  onClick:()=> void;
+
 }
 
-const RecipeCard = ({recipe}:Props) => {
+const RecipeCard = ({recipe, onClick}:Props) => {
   return (
-      <div className='recipe-card'>
+      <div className='recipe-card' onClick={onClick}>
      
           <img src={recipe.image} alt={recipe.title} />
           <div className='recipe-card-title'>

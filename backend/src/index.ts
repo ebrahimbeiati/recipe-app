@@ -15,11 +15,17 @@ app.get("/api/recipes/search", async (req, res) => {
     return res.json(result);
 })
 // Get recipe by ID
-app.get("/api/recipes/:recipeId", async (req, res) => {
+app.get("/api/recipes/:recipeId/summary", async (req, res) => {
   const recipeId = req.params.recipeId;
-  const result = await RecipeAPI.getRecipeSummary(recipeId);
-  return res.json(result);
+  try {
+    const result = await RecipeAPI.getRecipeSummary(recipeId);
+    return res.json(result);
+  } catch (error) {
+    console.error("Error fetching recipe summary:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 });
+
 
 app.listen(5100, () => {
   console.log("Server running on port 5100");

@@ -3,11 +3,14 @@ import "./App.css";
 import * as api from "./api";
 import { Recipe } from "./types";
 import RecipeCard from "./components/RecipeCard";
+import RecipeModal from "./components/RecipeModal";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const pageNumber = useRef<number>(1);
+  const [selectedRecipe, setSelectedRecipe]= useState<Recipe | undefined >(undefined);
+
+  const pageNumber = useRef(1);
 
   const handleSearch = async (event: FormEvent) => {
     event.preventDefault();
@@ -46,12 +49,15 @@ const App = () => {
       </form>
 
       {recipes.map((recipe) => (
-        <RecipeCard recipe={recipe}/>  
+        <RecipeCard recipe={recipe} onClick={ ()=>setSelectedRecipe(recipe)} />  
       ))}
       <button className="view-more-btn" onClick={handleViewMore}>
         view more
 
       </button>
+      {selectedRecipe?<RecipeModal recipeId={selectedRecipe.id.toString()} onClose={()=>setSelectedRecipe(undefined)} /> :null}
+
+
     </div>
   );
 };
