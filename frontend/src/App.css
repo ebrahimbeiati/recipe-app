@@ -1,6 +1,55 @@
 #root {
  font-family:Arial, Helvetica, sans-serif;
 }
+body{
+    padding-top: 5em;
+    padding-bottom: 5em;
+    height: 100vh;
+    box-sizing: border-box;
+    background-color: rgb(250, 246, 246);
+}
+@media(min-width:768px){
+    body{
+        padding-top: 5em;
+        margin-left: 10em;
+        padding-right: 10em;
+    }
+}
+.tab-active{
+    border-bottom: 4px rgb(183, 117, 4) solid transparent;
+    
+
+}
+form{
+    display: flex;
+    background-color: white;
+    align-items: center;
+}
+input{
+    padding: 0.5em;
+    border: none;
+    font-size: 2em;
+    flex: 1;
+}
+button{
+    padding: 0.5em;
+    border: none;
+    background-color: rgb(47, 47, 46);
+    color: white;
+    font-size: 2em;
+    cursor: pointer;
+}
+button:hover{
+    background-color: rgba(110, 108, 104, 0.8);
+}
+input:focus{
+    outline: none;
+}
+.recipe-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2em;
+}
 .app-container{
     display: flex;
     justify-content: center;
@@ -30,7 +79,7 @@
     background-color: black;
     font-size: 2em;
     font-weight: 500;
-    padding: 0.5em 1em;
+    padding: 0.5em 1.5em 0.5em 1.5em;
     border-radius: 1em;
     opacity: 80%;
 }
