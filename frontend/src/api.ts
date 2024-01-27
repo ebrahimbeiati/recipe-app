@@ -15,17 +15,33 @@ export const searchRecipes = async (searchTerm: string, page: number) => {
   return response.json();
 };
 
+// export const getRecipeSummary = async (recipeId: string) => {
+//   const url = new URL(`http://localhost:5100/api/recipes/${recipeId}/summary`);
+//   console.log("Request URL:", url.toString());
+//   const res = await fetch(url);
+//   if (!res.ok) {
+//     throw new Error(`Failed to fetch recipe: ${res.status}`);
+//   }
+
+
+//   return res.json();
+// };
 export const getRecipeSummary = async (recipeId: string) => {
   const url = new URL(`http://localhost:5100/api/recipes/${recipeId}/summary`);
-  console.log("Request URL:", url.toString());
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch recipe: ${res.status}`);
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch recipe: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch recipe.");
   }
-
-
-  return res.json();
 };
+
 
 export const getRecipeInformation = async (recipeId: string) => {
   const url = new URL(`http://localhost:5100/api/recipes/${recipeId}/information`);
