@@ -90,7 +90,7 @@ app.delete("/api/recipes/favourite/:recipeId", async (req, res) => {
       },
     });
     
-    return res.status(204).send(); // Successfully deleted
+    return res.status(204).send(); // Successfully delete
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Oops, something went wrong" });
