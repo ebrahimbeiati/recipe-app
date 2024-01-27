@@ -1,29 +1,30 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { RecipeSummary } from "../types";
 import * as RecipeAPI from "../api";
 
-
 interface Props {
-    recipeId: string;
-    onClose: () => void;
+  recipeId: string;
+  onClose: () => void;
 }
 
-
-const RecipeModal = ({recipeId, onClose}:Props) => {
+const RecipeModal = ({ recipeId, onClose }: Props) => {
   const [recipeSummary, setRecipeSummary] = useState<RecipeSummary>();
 
- useEffect(() => {
-   const fetchRecipeSummary = async () => {
-     try {
-const recipeSummary = await RecipeAPI.getRecipeSummary(recipeId);
-       setRecipeSummary(recipeSummary);
-     } catch (error) {
-       console.log(error);
-     }
-   };
+  useEffect(() => {
+    const fetchRecipeSummary = async () => {
+      try {
+        const recipeSummary = await RecipeAPI.getRecipeSummary(
+          String(recipeId)
+        );
+        setRecipeSummary(recipeSummary);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-   fetchRecipeSummary();
- }, [recipeId]);
+    fetchRecipeSummary();
+  }, [recipeId]);
+
   if (!recipeSummary) {
     return <></>;
   }
@@ -37,7 +38,7 @@ const recipeSummary = await RecipeAPI.getRecipeSummary(recipeId);
               <h4 className="modal-title">{recipeSummary.title}</h4>
             </div>
             <div className="modal-body">
-              <p>Some text in the modal.</p>
+              <p>Summary of the recipe.</p>
             </div>
             <div className="modal-footer">
               <button

@@ -1,11 +1,11 @@
-import { FormEvent, useRef, useState, useEffect } from "react";
 import "./App.css";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import * as api from "./api";
 import { Recipe } from "./types";
 import RecipeCard from "./components/RecipeCard";
 import RecipeModal from "./components/RecipeModal";
 import { AiOutlineSearch } from "react-icons/ai";
-//type tabs
+
 type Tabs = "search" | "favourites";
 
 const App = () => {
@@ -14,78 +14,49 @@ const App = () => {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | undefined>(
     undefined
   );
-  const [selectedTab, setSelectedTab] = useState<Tabs>();
+  const [selectedTab, setSelectedTab] = useState<Tabs>("search");
   const [favouriteRecipes, setFavouriteRecipes] = useState<Recipe[]>([]);
-
   const pageNumber = useRef(1);
+
   useEffect(() => {
     const fetchFavouriteRecipes = async () => {
       try {
         const favouriteRecipes = await api.getFavouriteRecipes();
         setFavouriteRecipes(favouriteRecipes.results);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     };
 
     fetchFavouriteRecipes();
   }, []);
 
-  //useeffect for fetching favourite recipes
-
-const addFavouriteRecipe = async (recipe: Recipe) => {
-  try {
-    await api.addFavouriteRecipe(recipe);
-    const updatedFavouriteRecipes = await api.getFavouriteRecipes();
-    setFavouriteRecipes(updatedFavouriteRecipes.results);
-  } catch (error) {
-    console.error(error);
-  }
-};
-  //remove favourite recipe
-  const removeFavouriteRecipe = async (recipe: Recipe) => {
-    try {
-      await api.removeFavouriteRecipe(recipe);
-      const updatedFavouriteRecipes = favouriteRecipes.filter(
-        (favRecipe) => favRecipe.id !== favRecipe.id
-      );
-      setFavouriteRecipes(updatedFavouriteRecipes);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-
-  const handleSearch = async (event: FormEvent) => {
+  const handleSearchSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
       const recipes = await api.searchRecipes(searchTerm, 1);
       setRecipes(recipes.results);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const loadMoreRecipes = async () => {
-    try {
-      const newRecipes = await api.searchRecipes(
-        searchTerm,
-        pageNumber.current
-      );
-      setFavouriteRecipes([...favouriteRecipes, ...newRecipes.results]);
-      pageNumber.current += 1;
-    } catch (error) {
-      console.error(error);
+      pageNumber.current = 1;
+    } catch (e) {
+      console.log(e);
     }
   };
 
-  const handleViewMore = () => {
-    loadMoreRecipes();
+  const handleViewMoreClick = async () => {
+    const nextPage = pageNumber.current + 1;
+    try {
+      const nextRecipes = await api.searchRecipes(searchTerm, nextPage);
+      setRecipes([...recipes, ...nextRecipes.results]);
+      pageNumber.current = nextPage;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div className="app-container">
       <div className="header">
-        <img src="/back.png" alt="back" />
+        <img src="/back.png"></img>
         <div className="title">My Recipe App</div>
       </div>
       <div className="tabs">
@@ -95,7 +66,6 @@ const addFavouriteRecipe = async (recipe: Recipe) => {
         >
           Recipe Search
         </h1>
-
         <h1
           className={selectedTab === "favourites" ? "tab-active" : ""}
           onClick={() => setSelectedTab("favourites")}
@@ -103,54 +73,64 @@ const addFavouriteRecipe = async (recipe: Recipe) => {
           Favourites
         </h1>
       </div>
+
       {selectedTab === "search" && (
         <>
-          <form onSubmit={(event) => handleSearch(event)}>
+          <form onSubmit={(event) => handleSearchSubmit(event)}>
             <input
               type="text"
+              required
+              placeholder="Enter a search term ..."
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-            />
+            ></input>
             <button type="submit">
               <AiOutlineSearch size={40} />
             </button>
           </form>
+
           <div className="recipe-grid">
             {recipes &&
-              recipes.map((recipe) => {
+              recipes.length > 0 &&
+              recipes.map((recipe, index) => {
                 const isFavourite = favouriteRecipes.some(
                   (favRecipe) => recipe.id === favRecipe.id
                 );
+
                 return (
                   <RecipeCard
-                    key={recipe.id}
+                    key={index}
                     recipe={recipe}
                     onClick={() => setSelectedRecipe(recipe)}
-                    onFavouriteButtonClick={
-                      isFavourite ? removeFavouriteRecipe : addFavouriteRecipe
-                    }
                     isFavourite={isFavourite}
+                    favouriteRecipes={favouriteRecipes}
+                    setFavouriteRecipes={setFavouriteRecipes}
                   />
                 );
               })}
           </div>
 
-          <button className="view-more-btn" onClick={handleViewMore}>
-            view more
+          <button className="view-more-button" onClick={handleViewMoreClick}>
+            View More
           </button>
         </>
       )}
 
       {selectedTab === "favourites" && (
         <div className="recipe-grid">
-          {favouriteRecipes.map((recipe) => (
-            <RecipeCard
-              recipe={recipe}
-              onClick={() => setSelectedRecipe(recipe)}
-              onFavouriteButtonClick={removeFavouriteRecipe}
-              isFavourite={true}
-            />
-          ))}
+          {favouriteRecipes &&
+            favouriteRecipes.length > 0 &&
+            favouriteRecipes.map((recipe, index) => (
+              <RecipeCard
+                key={index}
+                recipe={recipe}
+                onClick={() => setSelectedRecipe(recipe)}
+                // onFavouriteButtonClick={removeFavouriteRecipe}
+                isFavourite={true}
+                favouriteRecipes={favouriteRecipes}
+                setFavouriteRecipes={setFavouriteRecipes}
+              />
+            ))}
         </div>
       )}
 

@@ -2,6 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 
+
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,7 +14,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model FavouriteRecipes {
-  id       Int @id @default(autoincrement())
-  recipeId Int @unique
+model prismaClient.FavouriteRecipe {
+  id       Int      @id @default(autoincrement())
+  recipeId String   @unique
+  createdAt DateTime @default(now())
 }
+
+
