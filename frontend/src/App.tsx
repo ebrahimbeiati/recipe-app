@@ -53,54 +53,6 @@ const App = () => {
     }
   };
 
-  // const addFavouriteRecipe = async (recipe: Recipe) => {
-  //   const url = new URL("http://localhost:5100/api/recipes/favourite");
-  //   const res = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ recipeId: recipe.id }),
-  //   }).then((response) => response.json());
-  //   console.log(res);
-
-  //   try {
-  //     await api.addFavouriteRecipe(recipe);
-  //     setFavouriteRecipes([...favouriteRecipes, recipe]);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const removeFavouriteRecipe = async (recipe: Recipe) => {
-  //   try {
-  //     await api.removeFavouriteRecipe(recipe);
-  //     const updatedRecipes = favouriteRecipes.filter(
-  //       (favRecipe) => recipe.id !== favRecipe.id
-  //     );
-  //     setFavouriteRecipes(updatedRecipes);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const removeFavouriteRecipe = async (recipeId: string) => {
-  //   const url = new URL("http://localhost:5100/api/recipes/favourite");
-  //   const res = await fetch(url, {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ recipeId }),
-  //   });
-
-  //   if (!res.ok) {
-  //     throw new Error(`Failed to fetch recipe: ${res.status}`);
-  //   }
-
-  //   return res.json();
-  // };
-
   return (
     <div className="app-container">
       <div className="header">
@@ -138,25 +90,24 @@ const App = () => {
           </form>
 
           <div className="recipe-grid">
-            {recipes.map((recipe, index) => {
-              const isFavourite = favouriteRecipes.some(
-                (favRecipe) => recipe.id === favRecipe.id
-              );
+            {recipes &&
+              recipes.length > 0 &&
+              recipes.map((recipe, index) => {
+                const isFavourite = favouriteRecipes.some(
+                  (favRecipe) => recipe.id === favRecipe.id
+                );
 
-              return (
-                <RecipeCard
-                  key={index}
-                  recipe={recipe}
-                  onClick={() => setSelectedRecipe(recipe)}
-                  // onFavouriteButtonClick={
-                  //   isFavourite ? removeFavouriteRecipe : addFavouriteRecipe
-                  // }
-                  isFavourite={isFavourite}
-                  favouriteRecipes={favouriteRecipes}
-                  setFavouriteRecipes={setFavouriteRecipes}
-                />
-              );
-            })}
+                return (
+                  <RecipeCard
+                    key={index}
+                    recipe={recipe}
+                    onClick={() => setSelectedRecipe(recipe)}
+                    isFavourite={isFavourite}
+                    favouriteRecipes={favouriteRecipes}
+                    setFavouriteRecipes={setFavouriteRecipes}
+                  />
+                );
+              })}
           </div>
 
           <button className="view-more-button" onClick={handleViewMoreClick}>
@@ -167,17 +118,19 @@ const App = () => {
 
       {selectedTab === "favourites" && (
         <div className="recipe-grid">
-          {favouriteRecipes.map((recipe, index) => (
-            <RecipeCard
-              key={index}
-              recipe={recipe}
-              onClick={() => setSelectedRecipe(recipe)}
-              // onFavouriteButtonClick={removeFavouriteRecipe}
-              isFavourite={true}
-              favouriteRecipes={favouriteRecipes}
-              setFavouriteRecipes={setFavouriteRecipes}
-            />
-          ))}
+          {favouriteRecipes &&
+            favouriteRecipes.length > 0 &&
+            favouriteRecipes.map((recipe, index) => (
+              <RecipeCard
+                key={index}
+                recipe={recipe}
+                onClick={() => setSelectedRecipe(recipe)}
+                // onFavouriteButtonClick={removeFavouriteRecipe}
+                isFavourite={true}
+                favouriteRecipes={favouriteRecipes}
+                setFavouriteRecipes={setFavouriteRecipes}
+              />
+            ))}
         </div>
       )}
 

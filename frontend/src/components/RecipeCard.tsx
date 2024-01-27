@@ -5,7 +5,6 @@ import * as api from "../api";
 interface Props {
   recipe: Recipe;
   onClick: () => void;
-  // onFavouriteButtonClick: (recipe: Recipe) => void;
   isFavourite: boolean;
   favouriteRecipes: Recipe[];
   setFavouriteRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>;
@@ -17,20 +16,8 @@ const RecipeCard = ({
   isFavourite,
   favouriteRecipes,
   setFavouriteRecipes,
-}: // onFavouriteButtonClick,
-Props) => {
+}: Props) => {
   const addFavouriteRecipe = async (recipe: Recipe) => {
-    console.log("adding to favourites");
-    const url = new URL("http://localhost:5100/api/recipes/favourite");
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ recipeId: recipe.id }),
-    }).then((response) => response.json());
-    console.log(res);
-
     try {
       await api.addFavouriteRecipe(recipe);
       setFavouriteRecipes([...favouriteRecipes, recipe]);
@@ -40,21 +27,16 @@ Props) => {
   };
 
   const removeFavouriteRecipe = async (recipeId: string) => {
-    console.log("removing from favourites");
-    const url = new URL("http://localhost:5100/api/recipes/favourite");
-    const res = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ recipeId }),
-    });
+    try {
+      await api.removeFavouriteRecipe(recipeId);
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch recipe: ${res.status}`);
+      const recipesList = favouriteRecipes.filter(
+        (recipe) => recipe.id.toString() !== recipeId
+      );
+      setFavouriteRecipes(recipesList);
+    } catch (error) {
+      console.log(error);
     }
-
-    return res.json();
   };
 
   return (

@@ -84,22 +84,19 @@ export const favouriteRecipe = async (recipeId: string, userId: string) => {
 
 
 export const removeFavouriteRecipe = async (recipeId: string) => {
-  const url = new URL('http://localhost:5100/api/recipes/favourite');
-  const body = {
-    recipeId: recipeId
-  }
+  const url = new URL(
+    `http://localhost:5100/api/recipes/favourite/${recipeId}`
+  );
+
   const res = await fetch(url, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({body}),
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch recipe: ${res.status}`);
   }
-
-  return res.json();
 };
 
 export const addFavouriteRecipe = async (recipe: Recipe) => {
