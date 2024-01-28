@@ -27,7 +27,7 @@ app.get("/api/recipes/:recipeId/summary", async (req, res) => {
 });
 
 // Endpoint to get favorite recipes
-app.get("/api/recipes/favourite", async (req, res) => {
+app.get("/api/recipes/favourite", async (_, res) => {
   try {
     const recipes = await prismaClient.favouriteRecipe.findMany();
     const recipeIds = recipes.map((recipe) => recipe.recipeId.toString());
