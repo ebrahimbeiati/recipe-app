@@ -14,10 +14,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model prismaClient.FavouriteRecipe {
+model FavouriteRecipe {
   id       Int      @id @default(autoincrement())
   recipeId String   @unique
   createdAt DateTime @default(now())
 }
-
-
