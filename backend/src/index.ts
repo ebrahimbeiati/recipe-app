@@ -48,7 +48,6 @@ app.post("/api/recipes/favourite", async (req, res) => {
   if (body && body.recipeId) {
     const { recipeId } = body;
     id = recipeId.toString();
-    console.log("recipe id", recipeId);
   } else {
     console.log("Invalid request body structure");
   }
