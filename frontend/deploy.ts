@@ -4,7 +4,7 @@ import * as path from "path";
 
 const s3 = new AWS.S3();
 
-const bucketName = "your-s3-bucket-name";
+const bucketName = "recipe-app-web";
 const localBuildPath = "dist"; // Adjust this based on your Vite build output
 const remoteS3Path = "/";
 
