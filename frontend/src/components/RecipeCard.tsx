@@ -1,4 +1,5 @@
-import { Recipe } from '../types'
+import React from "react";
+import { Recipe } from "../types";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import * as api from "../api";
 
@@ -62,4 +63,4 @@ const RecipeCard = ({
   );
 };
 
-export default RecipeCard
+export default RecipeCard;

@@ -88,7 +88,7 @@ app.delete("/api/recipes/favourite/:recipeId", async (req, res) => {
         recipeId: recipeId,
       },
     });
-    
+
     return res.status(204).send(); // Successfully delete
   } catch (error) {
     console.error(error);

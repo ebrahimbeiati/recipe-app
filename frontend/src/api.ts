@@ -23,7 +23,6 @@ export const searchRecipes = async (searchTerm: string, page: number) => {
 //     throw new Error(`Failed to fetch recipe: ${res.status}`);
 //   }
 
-
 //   return res.json();
 // };
 export const getRecipeSummary = async (recipeId: string) => {
@@ -42,9 +41,10 @@ export const getRecipeSummary = async (recipeId: string) => {
   }
 };
 
-
 export const getRecipeInformation = async (recipeId: string) => {
-  const url = new URL(`http://localhost:5100/api/recipes/${recipeId}/information`);
+  const url = new URL(
+    `http://localhost:5100/api/recipes/${recipeId}/information`
+  );
   console.log("Request URL:", url.toString());
   const res = await fetch(url);
   if (!res.ok) {
@@ -55,7 +55,7 @@ export const getRecipeInformation = async (recipeId: string) => {
 };
 
 export const getFavouriteRecipes = async () => {
-  const url = new URL('http://localhost:5100/api/recipes/favourite');
+  const url = new URL("http://localhost:5100/api/recipes/favourite");
   console.log("Request URL:", url.toString());
   const res = await fetch(url);
   if (!res.ok) {
@@ -63,17 +63,17 @@ export const getFavouriteRecipes = async () => {
   }
 
   return res.json();
-}; 
+};
 
 export const favouriteRecipe = async (recipeId: string, userId: string) => {
-  const url = new URL('http://localhost:5100/api/recipes/favourite');
+  const url = new URL("http://localhost:5100/api/recipes/favourite");
   console.log("Request URL:", url.toString());
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({recipeId, userId}),
+    body: JSON.stringify({ recipeId, userId }),
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch recipe: ${res.status}`);
@@ -81,7 +81,6 @@ export const favouriteRecipe = async (recipeId: string, userId: string) => {
 
   return res.json();
 };
-
 
 export const removeFavouriteRecipe = async (recipeId: string) => {
   const url = new URL(
@@ -100,17 +99,17 @@ export const removeFavouriteRecipe = async (recipeId: string) => {
 };
 
 export const addFavouriteRecipe = async (recipe: Recipe) => {
-  const url = new URL('http://localhost:5100/api/recipes/favourite');
+  const url = new URL("http://localhost:5100/api/recipes/favourite");
   const body = {
-    recipeId: recipe.id
-  }
+    recipeId: recipe.id,
+  };
 
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({body}),
+    body: JSON.stringify({ body }),
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch recipe: ${res.status}`);
@@ -118,7 +117,3 @@ export const addFavouriteRecipe = async (recipe: Recipe) => {
 
   return res.json();
 };
-
-
-
-
