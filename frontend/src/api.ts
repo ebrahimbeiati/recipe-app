@@ -1,7 +1,7 @@
 import { Recipe } from "./types";
 
 export const searchRecipes = async (searchTerm: string, page: number) => {
-  const baseUrl = new URL(`http://localhost:5100/api/recipes/search`);
+  const baseUrl = new URL(`http://ec2-54-82-216-109.compute-1.amazonaws.com:5100/api/recipes/search`);
 
   baseUrl.searchParams.append("searchTerm", searchTerm);
   baseUrl.searchParams.append("page", String(page));
@@ -14,19 +14,8 @@ export const searchRecipes = async (searchTerm: string, page: number) => {
   }
   return response.json();
 };
-
-// export const getRecipeSummary = async (recipeId: string) => {
-//   const url = new URL(`http://localhost:5100/api/recipes/${recipeId}/summary`);
-//   console.log("Request URL:", url.toString());
-//   const res = await fetch(url);
-//   if (!res.ok) {
-//     throw new Error(`Failed to fetch recipe: ${res.status}`);
-//   }
-
-//   return res.json();
-// };
 export const getRecipeSummary = async (recipeId: string) => {
-  const url = new URL(`http://localhost:5100/api/recipes/${recipeId}/summary`);
+  const url = new URL(`http://ec2-54-82-216-109.compute-1.amazonaws.com:5100/api/recipes/${recipeId}/summary`);
   try {
     const res = await fetch(url);
     if (!res.ok) {
@@ -43,7 +32,7 @@ export const getRecipeSummary = async (recipeId: string) => {
 
 export const getRecipeInformation = async (recipeId: string) => {
   const url = new URL(
-    `http://localhost:5100/api/recipes/${recipeId}/information`
+    `http://ec2-54-82-216-109.compute-1.amazonaws.com:5100/api/recipes/${recipeId}/information`
   );
   console.log("Request URL:", url.toString());
   const res = await fetch(url);
@@ -55,7 +44,7 @@ export const getRecipeInformation = async (recipeId: string) => {
 };
 
 export const getFavouriteRecipes = async () => {
-  const url = new URL("http://localhost:5100/api/recipes/favourite");
+  const url = new URL("http://ec2-54-82-216-109.compute-1.amazonaws.com:5100/api/recipes/favourite");
   console.log("Request URL:", url.toString());
   const res = await fetch(url);
   if (!res.ok) {
@@ -66,7 +55,7 @@ export const getFavouriteRecipes = async () => {
 };
 
 export const favouriteRecipe = async (recipeId: string, userId: string) => {
-  const url = new URL("http://localhost:5100/api/recipes/favourite");
+  const url = new URL("http://ec2-54-82-216-109.compute-1.amazonaws.com:5100/api/recipes/favourite");
   console.log("Request URL:", url.toString());
   const res = await fetch(url, {
     method: "POST",
@@ -84,7 +73,7 @@ export const favouriteRecipe = async (recipeId: string, userId: string) => {
 
 export const removeFavouriteRecipe = async (recipeId: string) => {
   const url = new URL(
-    `http://localhost:5100/api/recipes/favourite/${recipeId}`
+    `http://ec2-54-82-216-109.compute-1.amazonaws.com:5100/api/recipes/favourite/${recipeId}`
   );
 
   const res = await fetch(url, {
@@ -99,7 +88,7 @@ export const removeFavouriteRecipe = async (recipeId: string) => {
 };
 
 export const addFavouriteRecipe = async (recipe: Recipe) => {
-  const url = new URL("http://localhost:5100/api/recipes/favourite");
+  const url = new URL("http://ec2-54-82-216-109.compute-1.amazonaws.com:5100/api/recipes/favourite");
   const body = {
     recipeId: recipe.id,
   };
