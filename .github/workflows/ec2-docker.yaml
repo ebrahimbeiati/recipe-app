@@ -45,13 +45,13 @@ jobs:
 
       - name: SSH to EC2 && Run the Docker Image
         run: |
-          ssh -i "recipe-app.pem" -o StrictHostKeyChecking=no ec2-user@ec2-54-82-216-109.compute-1.amazonaws.com << EOF
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/recipe-docker  
-            if sudo docker ps | grep -q funny_shockley; then
-             sudo docker restart funny_shockley
-            else
-              echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
-              echo "APIKEY=${{ secrets.APIKEY }}" >> .env
-             sudo docker run -dp 5100:5100 --env-file .env --name funny_shockley ${{ secrets.DOCKERHUB_USERNAME }}/recipe-docker
-            fi
-          EOF
+            ssh -i "recipe-app.pem" -o StrictHostKeyChecking=no ec2-user@ec2-54-82-216-109.compute-1.amazonaws.com << EOF
+                sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/recipe-docker
+                if sudo docker ps | grep -q funny_shockley; then
+                sudo docker restart funny_shockley
+                else
+                echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+                echo "APIKEY=${{ secrets.APIKEY }}" >> .env
+                sudo docker run -dp 5100:5100 --env-file .env --name funny_shockley ${{ secrets.DOCKERHUB_USERNAME }}/recipe-docker
+                fi
+            EOF

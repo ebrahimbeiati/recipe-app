@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (_, res) => {
-  res.send("Hello Ebrahim janam!");
+  res.send("Hello Ebrahim janamm!");
 })
 
 // Endpoint to search recipes
