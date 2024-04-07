@@ -1,0 +1,56 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+
+defaults:
+  run:
+    working-directory: "backend"
+
+jobs:
+  docker-build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build an Image 
+        run: docker build -t recipe-docker .
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tag my image
+        run: docker tag recipe-docker ${{ secrets.DOCKERHUB_USERNAME }}/recipe-docker
+
+      - name: Push to Docker Hub
+        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/recipe-docker
+
+  deploy:
+    needs:  docker-build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Private Key
+        run: |
+          echo "${{secrets.PRIVATE_KEY }}" > recipe-app.pem
+          chmod 400 recipe-app.pem
+
+      - name: SSH to EC2 && Run the Docker Image
+        run: |
+          ssh -i "recipe-app.pem" -o StrictHostKeyChecking=no ec2-user@ec2-54-82-216-109.compute-1.amazonaws.com << EOF
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/recipe-docker  
+            if docker ps | grep -q funny_shockley; then
+              docker restart funny_shockley
+            else
+              echo "URL_DB=${{ secrets.URL_DB }}" > .env
+              docker run -dp 5001:5000 --env-file .env --name funny_shockley ${{ secrets.DOCKERHUB_USERNAME }}/recipe-docker
+            fi
+          EOF

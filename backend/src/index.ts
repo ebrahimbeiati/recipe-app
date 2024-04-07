@@ -11,6 +11,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (_, res) => {
+  res.send("Hello World!");
+})
+
 // Endpoint to search recipes
 app.get("/api/recipes/search", async (req, res) => {
   const searchTerm = req.query.searchTerm as string;
