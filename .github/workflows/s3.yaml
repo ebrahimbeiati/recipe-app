@@ -31,7 +31,6 @@ jobs:
         run: |
           echo "AWS_ACCESS_KEY_ID=${{ secrets.ACCESS_KEY }}" >> "$GITHUB_ENV"
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.SECRET_ACCESS_KEY }}" >> "$GITHUB_ENV"
-          echo "AWS_REGION=us-east-1" >>  "$GITHUB_ENV"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
@@ -41,7 +40,7 @@ jobs:
           aws-region: "us-east-1"
 
       - name: Upload to S3
-        run: aws s3 sync ./build s3://my-recipe-app --delete
+        run: aws s3 sync ./dist s3://my-recipe-app --delete
 
 
 
