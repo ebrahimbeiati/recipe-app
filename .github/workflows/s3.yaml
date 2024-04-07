@@ -9,7 +9,7 @@ on:
 
 defaults:
   run:
-    working-directory: "frontend"
+    working-directory: "frontend" 
 
 jobs:
   build:
@@ -17,18 +17,20 @@ jobs:
     environment: production
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Frontend Code
+        uses: actions/checkout@v4
         with:
-          path: 'frontend' 
-          
-      - uses: actions/setup-node@v4
+          path: 'frontend'  
+
+      - name: Setup Node.js for Frontend
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Create build
+      - name: Create Frontend Build
         run: npm run build
 
       - name: Save AWS Credentials
