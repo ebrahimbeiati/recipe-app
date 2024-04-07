@@ -50,7 +50,8 @@ jobs:
             if sudo docker ps | grep -q funny_shockley; then
              sudo docker restart funny_shockley
             else
-              echo "URL_DB=${{ secrets.URL_DB }}" > .env
-             sudo docker run -dp 5001:5000 --env-file .env --name funny_shockley ${{ secrets.DOCKERHUB_USERNAME }}/recipe-docker
+              echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+              echo "APIKEY=${{ secrets.APIKEY }}" >> .env
+             sudo docker run -dp 5100:5100 --env-file .env --name funny_shockley ${{ secrets.DOCKERHUB_USERNAME }}/recipe-docker
             fi
           EOF
