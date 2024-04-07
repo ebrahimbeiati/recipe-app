@@ -39,7 +39,7 @@ input:focus {
 }
 
 button {
-  background-color: white;
+  background-color: rgb(219, 212, 212);
   border: none;
   cursor: pointer;
 }
