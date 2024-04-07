@@ -7,6 +7,7 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/api.ts", "src/recipe-api.ts"],
   "exclude": ["node_modules"]
 }
+

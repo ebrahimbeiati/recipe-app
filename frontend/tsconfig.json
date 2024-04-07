@@ -8,6 +8,6 @@
     "skipLibCheck": true,
     "outDir": "dist" 
   },
-  "include": ["src/**/*.ts", "src/api.ts", "../backend/src/recipe-api.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }
